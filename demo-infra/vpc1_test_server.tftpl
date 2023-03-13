@@ -1,0 +1,35 @@
+#!/bin/bash
+sudo yum update -y
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo cat > config.yaml << EOL
+ui:
+  header: "Test Workload - VPC1 - AZ${az}"
+endpoints:
+  - name: www.google.com
+    url: "https://www.google.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: portal.azure.com
+    url: "https://portal.azure.com/"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: www.amazon.com
+    url: "https://www.amazon.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: Tor
+    url: "http://103.196.37.111"
+    interval: 30s
+    group: Threats
+    conditions:
+      - "[STATUS] == 200"
+EOL
+sudo docker run -d --name gatus -p 80:8080 --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml twinproduction/gatus

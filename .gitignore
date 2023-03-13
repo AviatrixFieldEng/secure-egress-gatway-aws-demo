@@ -1,0 +1,6 @@
+demo-infra/aws-guacamole/*
+demo-infra/chris_var.tfvars
+*.tfstate*
+.DS*
+windows_init.txt
+*.terraform*
