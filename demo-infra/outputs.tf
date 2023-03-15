@@ -22,14 +22,6 @@ output "vpc1_windows_instances" {
   ]
 }
 
-output "vpc1_test_machines" {
-  value = [for v in module.ec2_instance_vpc1 : v.private_ip]
-}
-
-output "vpc2_test_machines" {
-  value = var.deploy_aws_tgw ? [for v in module.ec2_instance_vpc2 : v.private_ip] : null
-}
-
 output "test_machine_ui" {
-  value = var.deploy_aws_workloads ? "http://${aws_lb.test-machine-ingress[0].dns_name}:80" : null
+  value = var.deploy_aws_workloads ? ["http://${aws_lb.test-machine-ingress[0].dns_name}:80","http://${aws_lb.test-machine-ingress[0].dns_name}:81","http://${aws_lb.test-machine-ingress[0].dns_name}:82"] : null
 }
