@@ -44,4 +44,4 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
 EOL
-sudo docker run -d --name gatus -p 80:8080 --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml twinproduction/gatus
+sudo docker run -d --restart unless-stopped --name gatus -p 80:8080 --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml twinproduction/gatus

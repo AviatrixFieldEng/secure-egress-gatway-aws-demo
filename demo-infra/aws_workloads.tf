@@ -118,6 +118,7 @@ data "aws_ami" "guacamole" {
   }
 }
 
+# Deploy Guacamole AMI for remote desktop access to the Windows host in VPC1. Configuration happens in the separate "config-guacamole" Terraform plan
 module "ec2_instance_guacamole" {
   count  = var.deploy_aws_workloads ? 1 : 0
   source = "terraform-aws-modules/ec2-instance/aws"
@@ -140,6 +141,7 @@ module "ec2_instance_guacamole" {
 
 }
 
+# Assign an EIP to Guacamole so that the URL doesn't change across reboots
 resource "aws_eip" "guacamole" {
   count = var.deploy_aws_workloads ? 1 : 0
   vpc   = true
@@ -149,6 +151,7 @@ resource "aws_eip" "guacamole" {
 
 }
 
+# Wait for the Guacamole instance to deploy
 resource "time_sleep" "guacamole_ready" {
   count      = var.deploy_aws_workloads ? 1 : 0
   depends_on = [module.ec2_instance_guacamole]
@@ -156,6 +159,7 @@ resource "time_sleep" "guacamole_ready" {
   create_duration = "200s"
 }
 
+# SSH to the Guacamole instance and get the UI login
 resource "ssh_resource" "guac_password" {
   count = var.deploy_aws_workloads ? 1 : 0
   # The default behaviour is to run file blocks and commands at create time
@@ -176,18 +180,21 @@ resource "ssh_resource" "guac_password" {
   ]
 }
 
+
+## Wait for NAT GW's to be ready before deploying private workloads
 resource "time_sleep" "egress_ready" {
   depends_on = [aws_nat_gateway.vpc1, aws_nat_gateway.vpc2]
 
   create_duration = "90s"
 }
 
+## Deploy Windows Jump Host in VPC1, AZ1
 module "ec2_instance_windows" {
   count = var.deploy_aws_workloads ? 1 : 0
 
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  name = "windows-jump-${count.index+1}"
+  name = "windows-jump-${count.index + 1}"
 
   ami                         = data.aws_ami.windows.image_id
   instance_type               = "t3a.small"
@@ -200,7 +207,7 @@ module "ec2_instance_windows" {
   get_password_data           = true
 
   tags = {
-    OS          = "Windows"
+    OS = "Windows"
   }
   depends_on = [
     time_sleep.egress_ready
@@ -208,50 +215,32 @@ module "ec2_instance_windows" {
 
 }
 
+## Deploy Linux Test Hosts in VPC1, All AZs running Gatus for connectivity testing
 module "ec2_instance_vpc1" {
-   count = var.deploy_aws_workloads ? var.number_of_azs : 0
-#   count = 0
+  count  = var.deploy_aws_workloads ? var.number_of_azs : 0
   source = "terraform-aws-modules/ec2-instance/aws"
 
   name = "vpc1-workload-${count.index}"
 
-  ami                    = data.aws_ami.amazon-linux-2.image_id
-  instance_type          = "t3a.micro"
-  key_name               = module.key_pair[0].key_pair_name
-  monitoring             = true
-  vpc_security_group_ids = [aws_security_group.allow_all_rfc1918[0].id]
-  subnet_id              = aws_subnet.private_vpc1[count.index].id
-  user_data              = var.deploy_aws_tgw ? templatefile("${path.module}/vpc1_test_server_tgw.tftpl", {vpc2_server ="${module.ec2_instance_vpc2[0].private_ip}", az="${count.index +1}" }) : templatefile("${path.module}/vpc1_test_server.tftpl", {az="${count.index +1}" })
+  ami                         = data.aws_ami.amazon-linux-2.image_id
+  instance_type               = "t3a.micro"
+  key_name                    = module.key_pair[0].key_pair_name
+  monitoring                  = true
+  vpc_security_group_ids      = [aws_security_group.allow_all_rfc1918[0].id]
+  subnet_id                   = aws_subnet.private_vpc1[count.index].id
+  user_data                   = var.deploy_aws_tgw ? templatefile("${path.module}/vpc1_test_server_tgw.tftpl", { vpc2_server = "${module.ec2_instance_vpc2[0].private_ip}", az = "${count.index + 1}" }) : templatefile("${path.module}/vpc1_test_server.tftpl", { az = "${count.index + 1}" })
   user_data_replace_on_change = true
 
   tags = {
-    OS          = "Linux"
+    OS = "Linux"
   }
 
 }
 
-module "ec2_instance_vpc2" {
-  count  = var.deploy_aws_tgw && var.deploy_aws_workloads ? 1 : 0
-  source = "terraform-aws-modules/ec2-instance/aws"
-
-  name = "vpc2-workload-${count.index}"
-
-  ami                    = data.aws_ami.amazon-linux-2.image_id
-  instance_type          = "t3a.micro"
-  key_name               = module.key_pair[0].key_pair_name
-  monitoring             = true
-  vpc_security_group_ids = [aws_security_group.allow_all_rfc1918[1].id]
-  subnet_id              = aws_subnet.private_vpc2[0].id
-  user_data              = file("${path.module}/vpc2_web_server.tftpl")
-
-  tags = {
-    OS          = "Linux"
-  }
-}
-
+# Deploy an ELB to enable public access to web portal on the test Linux servers in VPC1
 resource "aws_lb" "test-machine-ingress" {
-  count = var.deploy_aws_workloads ? 1:0
-  name               = "test-machines"
+  count              = var.deploy_aws_workloads ? 1 : 0
+  name               = "avx-secure-egress"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_web_ssh_public[0].id]
@@ -259,7 +248,7 @@ resource "aws_lb" "test-machine-ingress" {
 }
 
 resource "aws_lb_listener" "test-machine-ingress" {
-  count = var.deploy_aws_workloads ? var.number_of_azs : 0
+  count             = var.deploy_aws_workloads ? var.number_of_azs : 0
   load_balancer_arn = aws_lb.test-machine-ingress[0].arn
   port              = "8${count.index}"
   protocol          = "HTTP"
@@ -271,7 +260,7 @@ resource "aws_lb_listener" "test-machine-ingress" {
 }
 
 resource "aws_lb_target_group" "test-machine-ingress" {
-  count = var.deploy_aws_workloads ? var.number_of_azs : 0
+  count       = var.deploy_aws_workloads ? var.number_of_azs : 0
   name        = "test-machine-${count.index}"
   port        = 80
   protocol    = "HTTP"
@@ -289,9 +278,30 @@ resource "aws_lb_target_group" "test-machine-ingress" {
 }
 
 resource "aws_lb_target_group_attachment" "test-machine-ingress" {
-  count = var.deploy_aws_workloads ? var.number_of_azs : 0
-  target_group_arn  = aws_lb_target_group.test-machine-ingress[count.index].arn
-  target_id         = module.ec2_instance_vpc1[count.index].private_ip
-  port              = 80
-#   availability_zone = "all"
+  count            = var.deploy_aws_workloads ? var.number_of_azs : 0
+  target_group_arn = aws_lb_target_group.test-machine-ingress[count.index].arn
+  target_id        = module.ec2_instance_vpc1[count.index].private_ip
+  port             = 80
+}
+
+
+## Deploy Linux test host in VPC2, running a simple web server container to test connectivity across TGW
+module "ec2_instance_vpc2" {
+  count  = var.deploy_aws_tgw && var.deploy_aws_workloads ? 1 : 0
+  source = "terraform-aws-modules/ec2-instance/aws"
+
+  name = "vpc2-workload-${count.index}"
+
+  ami                         = data.aws_ami.amazon-linux-2.image_id
+  instance_type               = "t3a.micro"
+  key_name                    = module.key_pair[0].key_pair_name
+  monitoring                  = true
+  vpc_security_group_ids      = [aws_security_group.allow_all_rfc1918[1].id]
+  subnet_id                   = aws_subnet.private_vpc2[0].id
+  user_data                   = file("${path.module}/vpc2_web_server.tftpl")
+  user_data_replace_on_change = true
+
+  tags = {
+    OS = "Linux"
+  }
 }

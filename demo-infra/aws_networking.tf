@@ -40,7 +40,7 @@ resource "aws_subnet" "public_vpc1" {
   }
 }
 
-# Create the private subnets VPC2
+# Create the private subnets VPC1
 resource "aws_subnet" "private_vpc1" {
   count             = var.number_of_azs
   cidr_block        = cidrsubnet(var.vpccidrs[0], 3, count.index + 3)
@@ -52,9 +52,9 @@ resource "aws_subnet" "private_vpc1" {
   }
 }
 
-# Create the private subnets VPC1
+# Create the public subnets VPC2
 resource "aws_subnet" "public_vpc2" {
-  count             = var.deploy_aws_tgw ? var.number_of_azs : 0
+  count             = var.deploy_aws_tgw ? 1 : 0
   cidr_block        = cidrsubnet(var.vpccidrs[1], 3, count.index)
   vpc_id            = aws_vpc.default[1].id
   availability_zone = local.availability_zones[count.index]
@@ -72,7 +72,7 @@ resource "aws_subnet" "private_vpc2" {
   availability_zone = local.availability_zones[count.index]
 
   tags = {
-    Name = "vpc1-private-${local.availability_zones[count.index]}"
+    Name = "vpc2-private-${local.availability_zones[count.index]}"
   }
 }
 
@@ -134,7 +134,7 @@ count  = var.deploy_aws_tgw ? 0 : var.number_of_azs
  
   route {
     cidr_block = "0.0.0.0/0"
- nat_gateway_id = aws_nat_gateway.vpc1[count.index].id
+    nat_gateway_id = aws_nat_gateway.vpc1[count.index].id
   }
 
   tags = {
@@ -208,6 +208,7 @@ resource "aws_route_table_association" "private_vpc1" {
   subnet_id      = aws_subnet.private_vpc1[count.index].id
   route_table_id = var.deploy_aws_tgw ?  aws_route_table.vpc1_private_tgw[count.index].id : aws_route_table.vpc1_private[count.index].id
 }
+
 
 # Create the route tables for VPC2
 resource "aws_route_table" "vpc2_public" {
