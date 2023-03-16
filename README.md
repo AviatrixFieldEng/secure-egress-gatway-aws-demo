@@ -10,6 +10,8 @@ git clone https://github.com/AviatrixFieldEng/secure-egress-gatway-aws-demo.git
 cd secure-egress-gateway-aws-demo/demo-infra
 ```
 
+Pre-reqs: Controller v7.0+, Terraform Provider v3.0+
+
 ### Deploy the Topology
 
 Update var.tfvars to match your configuration.
