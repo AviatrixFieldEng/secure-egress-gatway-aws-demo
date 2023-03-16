@@ -6,6 +6,12 @@ variable "aviatrix_aws_account_name" {
 #   description = "AWS Key Pair Name"
 # }
 
+variable "avx_gateway_size" {
+  description = "Instance size for the Aviatrix gateways"
+  default = "t3a.micro"
+  
+}
+
 variable "deploy_aws_tgw" {
   type = bool
   description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."

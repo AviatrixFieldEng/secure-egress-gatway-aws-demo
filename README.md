@@ -12,6 +12,8 @@ cd secure-egress-gateway-aws-demo/demo-infra
 
 Pre-reqs: Controller v7.0+, Terraform Provider v3.0+
 
+** YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE:** https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
+
 ### Deploy the Topology
 
 Update var.tfvars to match your configuration.
@@ -77,6 +79,8 @@ Edit `var.tfvars` with your variables:
 * `deploy_aws_workloads`: Deploy workloads in the network to simulate traffic.
 
 * `deploy_avx_egress_gateways`: Stage the deployment of Aviatrix Secure Egress gateways in VPC1 and VPC2
+
+* `deploy_avx_egress_policy`: Not supported yet
 
 * `enable_nat_avx_egress_gateways`: Configure SNAT on the Aviatrix Secure Egress gateways to automatically replace the AWS NAT Gateways. This can be done via Terraform or manually in the GUI depending on whether the customer wants to see programmatic configuration or Click Ops.
 

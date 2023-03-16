@@ -5,7 +5,6 @@ variable "vpccidrs" {
 
 locals {
   availability_zones = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
-
 }
 
 # Create the VPC
@@ -37,6 +36,7 @@ resource "aws_subnet" "public_vpc1" {
 
   tags = {
     Name = "vpc1-public-${local.availability_zones[count.index]}"
+    Subnet-Type = "Public"
   }
 }
 
@@ -49,6 +49,7 @@ resource "aws_subnet" "private_vpc1" {
 
   tags = {
     Name = "vpc1-private-${local.availability_zones[count.index]}"
+    Subnet-Type = "Private"
   }
 }
 
@@ -61,6 +62,7 @@ resource "aws_subnet" "public_vpc2" {
 
   tags = {
     Name = "vpc2-public-${local.availability_zones[count.index]}"
+    Subnet-Type = "Public"
   }
 }
 
@@ -73,6 +75,7 @@ resource "aws_subnet" "private_vpc2" {
 
   tags = {
     Name = "vpc2-private-${local.availability_zones[count.index]}"
+    Subnet-Type = "Private"
   }
 }
 
