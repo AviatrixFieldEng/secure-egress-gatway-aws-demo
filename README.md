@@ -12,7 +12,7 @@ cd secure-egress-gateway-aws-demo/demo-infra
 
 Pre-reqs: Controller v7.0+, Terraform Provider v3.0+
 
-** YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE:** https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
+YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE: https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
 
 ### Deploy the Topology
 
