@@ -114,7 +114,7 @@ data "aws_ami" "guacamole" {
 
   filter {
     name   = "name"
-    values = ["bitnami-guacamole-*-x86_64-hvm-ebs*"]
+    values = ["bitnami-guacamole-1.4.0-73-r42*-x86_64-hvm-ebs*"]
   }
 }
 
@@ -138,6 +138,8 @@ module "ec2_instance_guacamole" {
     Application = "Bastion"
     Environment = "Prod"
   }
+
+
 
 }
 
@@ -212,6 +214,9 @@ module "ec2_instance_windows" {
   depends_on = [
     time_sleep.egress_ready
   ]
+#   lifecycle {
+#     ignore_changes = [ami, ]
+#   }
 
 }
 
@@ -234,6 +239,9 @@ module "ec2_instance_vpc1" {
   tags = {
     OS = "Linux"
   }
+#   lifecycle {
+#     ignore_changes = [ami, ]
+#   }
 
 }
 
@@ -304,4 +312,10 @@ module "ec2_instance_vpc2" {
   tags = {
     OS = "Linux"
   }
+#   lifecycle {
+#     ignore_changes = [ami, ]
+#   }
+depends_on = [
+  aws_route_table.vpc2_private
+]
 }

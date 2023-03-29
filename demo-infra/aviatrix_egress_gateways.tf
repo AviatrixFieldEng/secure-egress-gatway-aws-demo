@@ -39,15 +39,19 @@ resource "aviatrix_gateway" "secure_egress_vpc1" {
 
 # Aviatrix Statefull Firewall Policy - required for the demo to match FQDN and simultaneously enable Threatguard
 resource "aviatrix_firewall" "firewall_1" {
-  count                    = var.deploy_avx_egress_gateways && var.number_of_azs < 3 ? 1 : var.number_of_azs
+  count                    = var.deploy_avx_egress_gateways && var.number_of_azs < 3 ? 1 : 0
   base_policy              = "deny-all"
   base_log_enabled         = false
   manage_firewall_policies = false
   gw_name                  = aviatrix_spoke_gateway.secure_egress_vpc1[count.index].gw_name
+  depends_on = [
+    aviatrix_spoke_gateway.secure_egress_vpc1, 
+    aviatrix_spoke_ha_gateway.secure_egress_vpc1_ha
+  ]
 }
 
 resource "aviatrix_firewall_policy" "firewall_policy_1" {
-  count       = var.deploy_avx_egress_gateways && var.number_of_azs < 3 ? 1 : var.number_of_azs
+  count       = var.deploy_avx_egress_gateways && var.number_of_azs < 3 ? 1 : 0
   gw_name     = aviatrix_spoke_gateway.secure_egress_vpc1[count.index].gw_name
   src_ip      = "0.0.0.0/0"
   dst_ip      = "0.0.0.0/0"
@@ -56,6 +60,10 @@ resource "aviatrix_firewall_policy" "firewall_policy_1" {
   action      = "allow"
   log_enabled = false
   description = "FQDN_Default"
+  depends_on = [
+    aviatrix_spoke_gateway.secure_egress_vpc1, 
+    aviatrix_spoke_ha_gateway.secure_egress_vpc1_ha
+  ]
 }
 
 

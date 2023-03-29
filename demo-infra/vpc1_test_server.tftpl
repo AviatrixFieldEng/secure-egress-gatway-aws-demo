@@ -13,6 +13,12 @@ endpoints:
     group: Internet
     conditions:
       - "[STATUS] == 200"
+  - name: www.vmware.com
+    url: "https://www.vmware.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
   - name: portal.azure.com
     url: "https://portal.azure.com/"
     interval: 5s

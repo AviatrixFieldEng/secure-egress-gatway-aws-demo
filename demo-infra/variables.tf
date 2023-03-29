@@ -8,14 +8,20 @@ variable "aviatrix_aws_account_name" {
 
 variable "avx_gateway_size" {
   description = "Instance size for the Aviatrix gateways"
-  default = "t3a.micro"
+  default = "t3.micro"
   
 }
 
 variable "deploy_aws_tgw" {
   type = bool
   description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."
-  default = true
+  default = false
+}
+
+variable "deploy_aviatrix_transit" {
+  type = bool
+  description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."
+  default = false
 }
 
 variable "deploy_aws_workloads" {
@@ -44,6 +50,12 @@ variable "enable_nat_avx_egress_gateways" {
 variable "deploy_avx_egress_policy" {
   type = bool
   description = "Deploy a Aviatrix Secure Egress configuration leveraging the legacy FQDN Egress policy configuration."
+  default = false
+}
+
+variable "deploy_dfw_egress_policy" {
+  type = bool
+  description = "Deploy a Aviatrix Secure Egress configuration leveraging Egress 2.0."
   default = false
 }
 
