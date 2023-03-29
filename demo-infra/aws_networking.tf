@@ -43,7 +43,7 @@ resource "aws_subnet" "public_vpc1" {
 # Create the private subnets VPC1
 resource "aws_subnet" "private_vpc1" {
   count             = var.number_of_azs
-  cidr_block        = cidrsubnet(var.vpccidrs[0], 3, count.index + 3)
+  cidr_block        = cidrsubnet(var.vpccidrs[0], 3, count.index + var.number_of_azs)
   vpc_id            = aws_vpc.default[0].id
   availability_zone = local.availability_zones[count.index]
 
