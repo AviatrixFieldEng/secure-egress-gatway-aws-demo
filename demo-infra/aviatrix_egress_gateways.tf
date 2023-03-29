@@ -32,6 +32,7 @@ resource "aviatrix_gateway" "secure_egress_vpc1" {
   vpc_reg      = var.aws_region
   gw_size      = var.avx_gateway_size
   subnet       = aws_subnet.public_vpc1[count.index].cidr_block
+  single_ip_snat = var.enable_nat_avx_egress_gateways
   depends_on = [
     aws_route_table_association.public_vpc1
   ]
