@@ -13,8 +13,8 @@ endpoints:
     group: Internet
     conditions:
       - "[STATUS] == 200"
-  - name: www.vmware.com
-    url: "https://www.vmware.com"
+  - name: www.facebook.com
+    url: "https://www.facebook.com"
     interval: 5s
     group: Internet
     conditions:
@@ -43,11 +43,11 @@ endpoints:
     group: Private Network
     conditions:
       - "[STATUS] == 200"
-  - name: Tor
-    url: "http://103.196.37.111"
+  - name: Malicious IP
+    url: "icmp://100.10.72.114"
     interval: 30s
     group: Threats
     conditions:
-      - "[STATUS] == 200"
+      - "[CONNECTED] == true"
 EOL
 sudo docker run -d --restart unless-stopped --name gatus -p 80:8080 --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml twinproduction/gatus
