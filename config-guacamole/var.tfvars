@@ -2,9 +2,9 @@ guacamole_fqdn = ""
 guacamole_login_url = ""
 guacamole_password = ""
 guacamole_username = ""
-vpc1_test_machines = [
-  "10.x.x.x",
-  "10.x.x.x",
+test_machine_ui = [
+  "http://avx-secure-egress-####.us-east-1.elb.amazonaws.com:80",
+  "http://avx-secure-egress-####.us-east-1.elb.amazonaws.com:81",
 ]
 vpc1_windows_instances = [
   {
