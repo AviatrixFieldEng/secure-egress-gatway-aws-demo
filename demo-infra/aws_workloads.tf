@@ -135,8 +135,7 @@ module "ec2_instance_guacamole" {
 
   tags = {
     Cloud       = "AWS"
-    Application = "Bastion"
-    Environment = "Prod"
+    Application = "Jump Server"
   }
 
 
@@ -158,7 +157,7 @@ resource "time_sleep" "guacamole_ready" {
   count      = var.deploy_aws_workloads ? 1 : 0
   depends_on = [module.ec2_instance_guacamole]
 
-  create_duration = "200s"
+  create_duration = "250s"
 }
 
 # SSH to the Guacamole instance and get the UI login
@@ -210,6 +209,7 @@ module "ec2_instance_windows" {
 
   tags = {
     OS = "Windows"
+    Application = "RDS"
   }
   depends_on = [
     time_sleep.egress_ready
@@ -238,7 +238,12 @@ module "ec2_instance_vpc1" {
 
   tags = {
     OS = "Linux"
+    Application = "HealthMonitor"
   }
+
+  depends_on = [
+    aws_route_table_association.private_vpc1
+  ]
 #   lifecycle {
 #     ignore_changes = [ami, ]
 #   }
@@ -311,6 +316,7 @@ module "ec2_instance_vpc2" {
 
   tags = {
     OS = "Linux"
+    Application = "Web App"
   }
 #   lifecycle {
 #     ignore_changes = [ami, ]
