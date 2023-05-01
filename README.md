@@ -123,7 +123,7 @@ Make sure that ThreatGuard is enabled as this is not currently supported via Ter
 2. Click on Topology -> Highlight Topology and the VPCs.  Show the workloads that are deployed.
 3. Click on Gateways -> Spokes -> vpc1 -> Cloud Routes:  Show that the route tables are pointing to NAT gateways in the private subnets across each AZ.  Optionally validate this in the AWS portal.
 4. Open the Test Machine UI to show the different kind of traffic flows.  Everything should be green.
-5. Swap out the NAT gateways by returning to CoPilot and clicking on the `Settings` tab.  Expand `Network Address Translation`.  Toggle the `Source NAT` switch and click save.
+5. Swap out the NAT gateways by returning to CoPilot and clicking on the `Settings` tab.  Expand `Network Address Translation`.  Toggle the `Source NAT` switch and click Save.
 6. Return to the Cloud Routes tab and refresh the table.  Show that Aviatrix has automatically swapped the default route to point to the gateway in that subnets local AZ.  If deployed with AWS TGW, note that the private route still points to TGW.
 7. Return to the Test Machine UI.  Show that none of the traffic is affected.  Optionally highlight latency for the responses to show that there is no latency impact to inserting Avatrix Secure Egress gateways.
 8. Wait for a minute for Threatguard to kick in.  We should see that the "Tor" connection is now blocked.  Note: This could take up to 20 seconds as the request needs to timeout before it's.

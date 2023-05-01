@@ -1,5 +1,5 @@
 demo-infra/aws-guacamole/*
-demo-infra/chris_var.tfvars
+*chris_var.tfvars
 config-guacamole/chris_var.tfvars
 *.tfstate*
 .DS*
