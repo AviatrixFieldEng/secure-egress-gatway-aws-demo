@@ -1,5 +1,5 @@
-# Secure Egress Gateway - AWS Demo
-Terraform config to demonstrate a basic Aviatrix Secure Egress gateway replacing an AWS NAT Gateway.
+# Distributed Cloud Firewall for Egress - AWS Demo
+Terraform config to demonstrate a basic Aviatrix Distributed Cloud Firewall gateway replacing an AWS NAT Gateway.
 
 # Quick Start
 
@@ -43,9 +43,9 @@ Log into Guacamole with the link from the `guacamole_login_url` in the initial a
 
 # Demo Topology
 
-The demonstration topology is designed to show a distributed Aviatrix Secure Egress design that replaces AWS NAT gateways.  Optionally the environment can be deployed where 2 VPCs are connected to an AWS Transit Gateway to demonstrate that deploying Aviatrix Secure Egress does not impact an existing transit network deployment.
+The demonstration topology is designed to show a Distributed Cloud Firewall for Egress design that replaces AWS NAT gateways.  Optionally the environment can be deployed where 2 VPCs are connected to an AWS Transit Gateway to demonstrate that deploying Aviatrix Distributed Cloud Firewall for Egress does not impact an existing transit network deployment.
 
-In the demo, we will be securing VPC1.  The terraform allows a configurable number of AZs for VPC1 to demonstrate how Secure Egress optimizes traffic to stay within an AZ and can support 2+ AZs.
+In the demo, we will be securing VPC1.  The terraform allows a configurable number of AZs for VPC1 to demonstrate how Distributed Cloud Firewall for Egress optimizes traffic to stay within an AZ and can support 2+ AZs.
 
 There are 4 types of machines that are deployed to allow for traffic simulation:
 
@@ -70,21 +70,17 @@ cd demo-infra
 
 Edit `var.tfvars` with your variables:
 
-* `aviatrix_aws_account_name`: The name of the AWS account in the Aviatrix controller with which you want to deploy the Secure Egress Gateways
+* `aviatrix_aws_account_name`: The name of the AWS account in the Aviatrix controller with which you want to deploy the Egress Gateways
 
-* `aws_region`: Region to deploy the Lamba. Defaults to `us-east-1`
+* `aws_region`: Region to deploy the lab environment. Defaults to `us-east-1`
 
-* `deploy_aws_tgw`: Deploy a TGW and VPC2 to demonstrate that Secure Egress can be seamlessly deployed with an existing transit and distributed NAT gateways.
+* `deploy_aws_tgw`: Deploy a TGW and VPC2 to demonstrate that Distributed Cloud Firewall for Egress can be seamlessly deployed with an existing transit and distributed NAT gateways.
 
 * `deploy_aws_workloads`: Deploy workloads in the network to simulate traffic.
 
-* `deploy_avx_egress_gateways`: Stage the deployment of Aviatrix Secure Egress gateways in VPC1 and VPC2
+* `deploy_avx_egress_gateways`: Stage the deployment of Aviatrix Egress gateways in VPC1 and VPC2
 
-* `deploy_avx_egress_policy`: Not supported yet
-
-* `enable_nat_avx_egress_gateways`: Configure SNAT on the Aviatrix Secure Egress gateways to automatically replace the AWS NAT Gateways. This can be done via Terraform or manually in the GUI depending on whether the customer wants to see programmatic configuration or Click Ops.
-
-* `deploy_avx_egress_policy`: Not supported yet
+* `enable_nat_avx_egress_gateways`: Configure SNAT on the Aviatrix Egress gateways to automatically replace the AWS NAT Gateways. This can be done via Terraform or manually in the GUI depending on whether the customer wants to see programmatic configuration or Click Ops.
 
 * `number_of_azs`: Number of AZs in VPC1.  Many customers use 2+ AZs.  This is so that the demo can match the customer environment.
 
@@ -108,14 +104,14 @@ The result of the Terraform deploy will deliver the following outputs:
 
 # Demo Flow
 
-## 3 Clicks to Secure Egress
-In this demo we will enable Secure Egress in 3 clicks.  This assumes the gateways are pre-staged in the VPCs.
+## 3 Clicks to Distributed Cloud Firewall
+In this demo we will enable Distributed Cloud Firewall for Egress in 3 clicks.  This assumes the gateways are pre-staged in the VPCs.
 
 * **Click 1:** Enable SNAT on the VPC Gateway Group
 * **Click 2:** Configure FQDN Policy Group
 * **Click 3:** Enable FQDN Filtering on the VPC Gateway Group
 
-To demonstrate the new Simple Configuration UI, you must be on controller version 7.0 and CoPilot version 3.7.
+To demonstrate Distributed Cloud Firewall for Egress, you must be on controller version 7.1 and CoPilot version 3.12.
 
 Make sure that ThreatGuard is enabled as this is not currently supported via Terraform.  Optionally configure CoPilot alerting.
 
@@ -125,10 +121,9 @@ Make sure that ThreatGuard is enabled as this is not currently supported via Ter
 4. Open the Test Machine UI to show the different kind of traffic flows.  Everything should be green.
 5. Swap out the NAT gateways by returning to CoPilot and clicking on the `Settings` tab.  Expand `Network Address Translation`.  Toggle the `Source NAT` switch and click Save.
 6. Return to the Cloud Routes tab and refresh the table.  Show that Aviatrix has automatically swapped the default route to point to the gateway in that subnets local AZ.  If deployed with AWS TGW, note that the private route still points to TGW.
-7. Return to the Test Machine UI.  Show that none of the traffic is affected.  Optionally highlight latency for the responses to show that there is no latency impact to inserting Avatrix Secure Egress gateways.
+7. Return to the Test Machine UI.  Show that none of the traffic is affected.  Optionally highlight latency for the responses to show that there is no latency impact to inserting Avatrix Egress gateways.
 8. Wait for a minute for Threatguard to kick in.  We should see that the "Tor" connection is now blocked.  Note: This could take up to 20 seconds as the request needs to timeout before it's.
 9. Demo Threatguard.  Show that we can identify details of the Threat that has been blocked.  Highlight Threat Prevention as one of the default values of the solution even if you don't initially do FQDN filtering.
 10. Demo FlowIQ.  Show holistic visibility into Egress traffic.  Highlight that this can be used for Forensics, troubleshooting, or understanding how to reduce Egress charges.
-11. Demo FQDN Filtering.  First, create a policy group.  
-12. Click on the .  Enable Egress filtering on the VPC1 gateway.  Refresh the table to show that it is enabled.
-13. Return to the Test Machine UI.  Show that one `portal.azure.com` is no longer accessible.
+11. Demo FQDN/Egress Filtering by filtering out one of the FQDNs.
+12. Return to the Test Machine UI.  Show that one the target FQDN is no longer accessible.
