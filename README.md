@@ -43,6 +43,8 @@ Log into Guacamole with the link from the `guacamole_login_url` in the initial a
 
 # Demo Topology
 
+![Alt text](./topology-aws.png?raw=true "Distributed Cloud Firewall for Egress Lab Topology")
+
 The demonstration topology is designed to show a Distributed Cloud Firewall for Egress design that replaces AWS NAT gateways.  Optionally the environment can be deployed where 2 VPCs are connected to an AWS Transit Gateway to demonstrate that deploying Aviatrix Distributed Cloud Firewall for Egress does not impact an existing transit network deployment.
 
 In the demo, we will be securing VPC1.  The terraform allows a configurable number of AZs for VPC1 to demonstrate how Distributed Cloud Firewall for Egress optimizes traffic to stay within an AZ and can support 2+ AZs.
