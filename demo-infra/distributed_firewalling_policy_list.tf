@@ -22,7 +22,7 @@ resource "aviatrix_distributed_firewalling_policy_list" "distributed_firewalling
             aviatrix_smart_group.private_networks.id
         ]
         dst_smart_groups = [ 
-            aviatrix_smart_group.internet.id
+            local.public_internet_smart_group_id
         ]
         port_ranges {
             lo = 443
@@ -41,8 +41,8 @@ resource "aviatrix_distributed_firewalling_policy_list" "distributed_firewalling
         src_smart_groups = [ 
             aviatrix_smart_group.private_networks.id
         ]
-        dst_smart_groups = [ 
-            aviatrix_smart_group.internet.id
+        dst_smart_groups = [
+            local.public_internet_smart_group_id
         ]
         port_ranges {
             lo = 80

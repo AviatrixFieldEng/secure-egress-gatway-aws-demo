@@ -10,9 +10,17 @@ git clone https://github.com/AviatrixFieldEng/secure-egress-gatway-aws-demo.git
 cd secure-egress-gateway-aws-demo/demo-infra
 ```
 
-Pre-reqs: Controller v7.0+, Terraform Provider v3.0+
+Pre-reqs: 
 
-YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE: https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
+- Controller v7.0+, Terraform Provider v3.0+
+
+- YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE: https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
+
+- YOU MUST INSTALL AWS CLI on the machine you plan to deploy this lab from and have it configured to access your AWS account.
+
+- If you are running that lab against a controller that seats in Azure, you need to uncomment and provide value for the below variables as controller doesn't have an EC2 instance role to access AWS account :
+  - aws_access_key
+  - aws_access_key_secret
 
 ### Deploy the Topology
 

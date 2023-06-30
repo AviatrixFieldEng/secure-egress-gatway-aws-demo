@@ -3,13 +3,16 @@ variable "aviatrix_aws_account_name" {
 }
 
 variable "username" {
+  description = "Username used to access Aviatrix Controller"
 }
 
 variable "password" {
+  description = "Password used to connect to Aviatrix Controller"
   sensitive = true
 }
 
 variable "controller_ip" {
+  description = "Aviatrix Controller IP Address"
 }
 
 variable "aws_access_key" {
@@ -94,3 +97,8 @@ variable "aws_region" {
   description = "AWS Region"
   default     = "us-east-2"
 }
+
+locals {
+  public_internet_smart_group_id = "def000ad-0000-0000-0000-000000000001"
+}
+
