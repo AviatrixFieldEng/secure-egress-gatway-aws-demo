@@ -2,61 +2,83 @@ variable "aviatrix_aws_account_name" {
   description = "Aviatrix AWS Account Name"
 }
 
+variable "username" {
+}
+
+variable "password" {
+  sensitive = true
+}
+
+variable "controller_ip" {
+}
+
+variable "aws_access_key" {
+  description = "Your AWS key to access your account"
+  default     = "dummy"
+  sensitive   = true
+}
+
+variable "aws_access_key_secret" {
+  description = "Your AWS key secret to access your account"
+  default     = "dummy"
+  sensitive   = true
+}
+
 # variable "aws_key_pair_name" {
 #   description = "AWS Key Pair Name"
 # }
 
 variable "avx_gateway_size" {
   description = "Instance size for the Aviatrix gateways"
-  default = "t3.micro"
-  
+  default     = "t3.micro"
+
 }
 
 variable "deploy_aws_tgw" {
-  type = bool
+  type        = bool
   description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."
-  default = false
+  default     = false
 }
 
 variable "deploy_aviatrix_transit" {
-  type = bool
+  type        = bool
   description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."
-  default = false
+  default     = false
 }
 
 variable "deploy_aws_workloads" {
-  type = bool
+  type        = bool
   description = "Deploy workloads in the AWS VPCs for testing connectivity and FQDN filtering."
-  default = true
+  default     = true
 }
 
 variable "number_of_azs" {
   description = "Number of Availability Zones in each VPC"
-  default = 2
+  default     = 2
 }
 
 variable "deploy_avx_egress_gateways" {
-  type = bool
+  type        = bool
   description = "Stage the deployment of Aviatrix Gateways in VPC 1"
-  default = true
+  default     = true
 }
 
 variable "enable_nat_avx_egress_gateways" {
-  type = bool
+  type        = bool
   description = "Enable NAT on the Aviatrix Egress Gateways"
-  default = false
+  default     = false
 }
 
 variable "deploy_avx_egress_policy" {
-  type = bool
+  type        = bool
   description = "Deploy a Aviatrix Secure Egress configuration leveraging the legacy FQDN Egress policy configuration."
-  default = false
+  default     = false
 }
 
 variable "deploy_dfw_egress_policy" {
-  type = bool
+  type        = bool
   description = "Deploy a Aviatrix Secure Egress configuration leveraging Egress 2.0."
-  default = false
+  default     = false
 }
 
 variable "tags" {

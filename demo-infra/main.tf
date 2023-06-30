@@ -15,10 +15,15 @@ terraform {
 
 provider "aviatrix" {
   skip_version_validation = true
+  controller_ip           = var.controller_ip
+  username                = var.username
+  password                = var.password
 }
 
 provider "aws" {
-  region = var.aws_region
+  region     = var.aws_region
+  access_key = var.aws_access_key != "dummy" ? var.aws_access_key : null
+  secret_key = var.aws_access_key_secret != "dummy" ? var.aws_access_key_secret : null
 }
 
 // Generate random value for the name

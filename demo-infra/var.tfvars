@@ -7,5 +7,5 @@ deploy_avx_egress_gateways     = true
 enable_nat_avx_egress_gateways = false
 deploy_avx_egress_policy       = false
 deploy_dfw_egress_policy       = true
-avx_gateway_size               = "t3.small"
+avx_gateway_size               = "t3.medium"
 number_of_azs                  = 2
