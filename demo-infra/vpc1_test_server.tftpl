@@ -5,7 +5,8 @@ sudo systemctl start docker
 sudo systemctl enable docker
 sudo cat > config.yaml << EOL
 ui:
-  header: "Test Workload - VPC1 - AZ${az}"
+  header: "Test App - AWS - AZ${az}"
+  title: "Test App - AWS - AZ${az}"
 endpoints:
   - name: www.google.com
     url: "https://www.google.com"
@@ -31,9 +32,9 @@ endpoints:
     group: Internet
     conditions:
       - "[STATUS] == 200"
-  - name: Malicious IP
+  - name: Poor Reputation IP
     url: "icmp://100.10.72.114"
-    interval: 30s
+    interval: 20s
     group: Threats
     conditions:
       - "[CONNECTED] == true"
