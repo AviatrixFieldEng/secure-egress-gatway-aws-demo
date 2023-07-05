@@ -15,7 +15,6 @@ provider "guacamole" {
 }
 
 resource "guacamole_connection_rdp" "aws_vdi" {
-  #for_each = var.vpc1_windows_instances
   for_each = { for record in var.vpc1_windows_instances : record.name => record }
 
   name = each.value.name
