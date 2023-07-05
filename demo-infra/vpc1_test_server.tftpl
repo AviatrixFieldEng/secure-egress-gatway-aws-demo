@@ -33,10 +33,10 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
   - name: Poor Reputation IP
-    url: "icmp://100.10.72.114"
+    url: "http://101.226.173.218"
     interval: 20s
     group: Threats
     conditions:
-      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
 EOL
 sudo docker run -d --restart unless-stopped --name gatus -p 80:8080 --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml twinproduction/gatus
