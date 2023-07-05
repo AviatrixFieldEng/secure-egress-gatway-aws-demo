@@ -2,13 +2,9 @@ variable "aviatrix_aws_account_name" {
   description = "Aviatrix AWS Account Name"
 }
 
-# variable "aws_key_pair_name" {
-#   description = "AWS Key Pair Name"
-# }
-
 variable "avx_gateway_size" {
   description = "Instance size for the Aviatrix gateways"
-  default = "t3.micro"
+  default = "t3.small"
   
 }
 
@@ -47,13 +43,7 @@ variable "enable_nat_avx_egress_gateways" {
   default = false
 }
 
-variable "deploy_avx_egress_policy" {
-  type = bool
-  description = "Deploy a Aviatrix Secure Egress configuration leveraging the legacy FQDN Egress policy configuration."
-  default = false
-}
-
-variable "deploy_dfw_egress_policy" {
+variable "deploy_dcf_egress_policy" {
   type = bool
   description = "Deploy a Aviatrix Secure Egress configuration leveraging Egress 2.0."
   default = false
