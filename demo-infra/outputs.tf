@@ -23,6 +23,5 @@ output "vpc1_windows_instances" {
 }
 
 output "test_machine_ui" {
-  #value = var.deploy_aws_workloads ? ["http://${aws_lb.test-machine-ingress[0].dns_name}:80","http://${aws_lb.test-machine-ingress[0].dns_name}:81","http://${aws_lb.test-machine-ingress[0].dns_name}:82"] : null
   value = var.deploy_aws_workloads ? [for v in aws_lb_listener.test-machine-ingress : "http://${aws_lb.test-machine-ingress[0].dns_name}:${v.port}"] : null
 }
