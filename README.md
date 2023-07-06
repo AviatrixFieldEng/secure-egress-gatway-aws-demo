@@ -17,7 +17,7 @@ git clone https://github.com/AviatrixFieldEng/secure-egress-gatway-aws-demo.git
 cd secure-egress-gateway-aws-demo/demo-infra
 ```
 
-Pre-reqs: Controller v7.0+, Terraform Provider v3.0+
+Pre-reqs: Controller v7.1+, Terraform Provider v3.1+
 
 YOU MUST ALSO SUBSCRIBE TO THE BITNAMI GUACAMOLE IMAGE ON AWS MARKETPLACE: https://aws.amazon.com/marketplace/pp/prodview-qfe3iaudofb5q
 
