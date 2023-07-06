@@ -1,0 +1,48 @@
+#!/bin/bash
+# Update package information
+sudo apt-get update
+
+# Install Docker
+sudo apt-get install -y docker.io
+
+# Enable and start Docker
+sudo systemctl enable docker
+sudo systemctl start docker
+
+sudo cat > /tmp/config.yaml << EOL
+ui:
+  header: "Test App - GCP"
+  title: "Test App - GCP"
+endpoints:
+  - name: www.google.com
+    url: "https://www.google.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: www.facebook.com
+    url: "https://www.facebook.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: portal.azure.com
+    url: "https://portal.azure.com/"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: www.amazon.com
+    url: "https://www.amazon.com"
+    interval: 5s
+    group: Internet
+    conditions:
+      - "[STATUS] == 200"
+  - name: Poor Reputation IP
+    url: "http://101.226.173.218"
+    interval: 20s
+    group: Threats
+    conditions:
+      - "[STATUS] == 200"
+EOL
+sudo docker run -d --restart unless-stopped --name gatus -p 80:8080 --mount type=bind,source=/tmp/config.yaml,target=/config/config.yaml twinproduction/gatus
