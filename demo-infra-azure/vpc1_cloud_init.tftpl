@@ -1,0 +1,43 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - docker.io
+write_files:
+  - path: /tmp/config.yaml
+    content: |
+      ui:
+        header: "Test App ${index} - Azure"
+        title: "Test App ${index} - Azure"
+      endpoints:
+        - name: www.google.com
+          url: "https://www.google.com"
+          interval: 5s
+          group: Internet
+          conditions:
+            - "[STATUS] == 200"
+        - name: www.facebook.com
+          url: "https://www.facebook.com"
+          interval: 5s
+          group: Internet
+          conditions:
+            - "[STATUS] == 200"
+        - name: portal.azure.com
+          url: "https://portal.azure.com/"
+          interval: 5s
+          group: Internet
+          conditions:
+            - "[STATUS] == 200"
+        - name: www.amazon.com
+          url: "https://www.amazon.com"
+          interval: 5s
+          group: Internet
+          conditions:
+            - "[STATUS] == 200"
+        - name: Poor Reputation IP
+          url: "http://101.226.173.218"
+          interval: 20s
+          group: Threats
+          conditions:
+            - "[STATUS] == 200"
+runcmd:
+  - sudo docker run -d --restart unless-stopped --name gatus -p 80:8080 --mount type=bind,source=/tmp/config.yaml,target=/config/config.yaml twinproduction/gatus
