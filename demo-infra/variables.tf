@@ -14,6 +14,12 @@ variable "deploy_aws_tgw" {
   default = false
 }
 
+variable "deploy_nat_gateway" {
+  type = bool
+  default = true
+  description = "Optionally deploys AWS NAT Gateways to demonstrate failover"
+}
+
 variable "deploy_aviatrix_transit" {
   type = bool
   description = "Deploys a second VPC and a TGW to attach to the VPC.  This is to demonstrate seamless integration of Aviatrix Secure Egress into an existing transit architecture."

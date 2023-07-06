@@ -22,7 +22,7 @@ resource "aviatrix_smart_group" "aws_egress_vpc" {
   }
 }
 
-resource "aviatrix_smart_group" "aws_egress_vpc" {
+resource "aviatrix_smart_group" "threatiq" {
   name = "ThreatIQ-Blocklist"
   selector {
     match_expressions {
@@ -31,8 +31,8 @@ resource "aviatrix_smart_group" "aws_egress_vpc" {
   }
 }
 
-resource "aviatrix_web_group" "vpc1_allow" {
-  name = "vpc1_allow"
+resource "aviatrix_web_group" "demo_fqdn_allow" {
+  name = "Demo-FQDN-Allow"
   selector {
     match_expressions {
       snifilter = "portal.azure.com"
@@ -47,7 +47,7 @@ resource "aviatrix_web_group" "vpc1_allow" {
 }
 
 resource "aviatrix_web_group" "facebook" {
-  name = "facebook"
+  name = "Facebook"
   selector {
     match_expressions {
       snifilter = "*.facebook.com"
