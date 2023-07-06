@@ -1,3 +1,10 @@
+# RECENT UPDATES
+* Support for Azure and GCP - Deploy Terraform config in `demo-infra-azure` and `demo-infra-gcp`
+* Support for creation of Webgroups and DCF policy
+* Support for t3.small gateways and Distributed Cloud Firewall Webgroups (7.1b)
+* Support for 3+ AZs in a gateway group as a spoke (7.1b)
+
+
 # Distributed Cloud Firewall for Egress - AWS Demo
 Terraform config to demonstrate a basic Aviatrix Distributed Cloud Firewall gateway replacing an AWS NAT Gateway.
 
