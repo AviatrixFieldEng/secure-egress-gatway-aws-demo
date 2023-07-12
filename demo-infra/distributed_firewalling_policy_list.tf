@@ -40,7 +40,7 @@ resource "aviatrix_distributed_firewalling_policy_list" "distributed_firewalling
     protocol = "TCP"
     logging  = true
     # web_groups = [
-    #   aviatrix_web_group.demo_fqdn_allow.id
+    #   "74be8926-c68d-4713-8b00-4636762d1aa1"
     # ]
     exclude_sg_orchestration = true
     priority                 = 1

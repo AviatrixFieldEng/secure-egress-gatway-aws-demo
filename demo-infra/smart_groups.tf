@@ -43,6 +43,21 @@ resource "aviatrix_web_group" "demo_fqdn_allow" {
     match_expressions {
       snifilter = "*.google.com"
     }
+    match_expressions {
+      snifilter = "*.google.com"
+    }
+    match_expressions {
+      snifilter = "auth.docker.io"
+    }
+    match_expressions {
+      snifilter = "registry-1.docker.io"
+    }
+    match_expressions {
+      snifilter = "production.cloudflare.docker.com"
+    }
+    match_expressions {
+      snifilter = "*.amazonaws.com"
+    }
   }
 }
 
