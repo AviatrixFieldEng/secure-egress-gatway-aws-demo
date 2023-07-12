@@ -131,8 +131,9 @@ Make sure that ThreatGuard is enabled as this is not currently supported via Ter
 5. Swap out the NAT gateways by returning to CoPilot and clicking on the `Settings` tab.  Expand `Network Address Translation`.  Toggle the `Source NAT` switch and click Save.
 6. Return to the Cloud Routes tab and refresh the table.  Show that Aviatrix has automatically swapped the default route to point to the gateway in that subnets local AZ.  If deployed with AWS TGW, note that the private route still points to TGW.
 7. Return to the Test Machine UI.  Show that none of the traffic is affected.  Optionally highlight latency for the responses to show that there is no latency impact to inserting Avatrix Egress gateways.
-8. Wait for a minute for Threatguard to kick in.  We should see that the "Tor" connection is now blocked.  Note: This could take up to 20 seconds as the request needs to timeout before it's.
+8. Wait for a minute for Threatguard to kick in.  We should see that the attempted connection to a malicious IP is now blocked.  Note: This could take up to 20 seconds as the request needs to timeout before it's.
 9. Demo Threatguard.  Show that we can identify details of the Threat that has been blocked.  Highlight Threat Prevention as one of the default values of the solution even if you don't initially do FQDN filtering.
 10. Demo FlowIQ.  Show holistic visibility into Egress traffic.  Highlight that this can be used for Forensics, troubleshooting, or understanding how to reduce Egress charges.
-11. Demo FQDN/Egress Filtering by filtering out one of the FQDNs.
-12. Return to the Test Machine UI.  Show that one the target FQDN is no longer accessible.
+11. Go to Security -> Distributed Cloud Firewall -> Webgroups.  Show the `Demo-FQDN-Allow` Webgroup and note that `facebook.com` is not included in the list.
+12. Go to the Rules tab and edit the policy `Egress-Allow-HTTPS`.  Add a the `Demo-FQDN-Allow` Webgroup to the policy.
+13. Return to the Test Machine UI.  Show that one the target FQDN is no longer accessible.
